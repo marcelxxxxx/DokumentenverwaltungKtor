@@ -35,4 +35,4 @@ out/
 ### VS Code ###
 .vscode/
 
-src/main/kotlin/db/DBManager.kt
+src/main/kotlin/db/DBData.kt
