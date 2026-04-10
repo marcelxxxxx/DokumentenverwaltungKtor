@@ -1,0 +1,35 @@
+val kotlin_version: String by project
+val logback_version: String by project
+
+plugins {
+    kotlin("jvm") version "2.3.0"
+    id("io.ktor.plugin") version "3.4.2"
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.3.0"
+    application
+}
+
+group = "online.marcel"
+version = "0.0.1"
+
+application {
+    mainClass = "io.ktor.server.netty.EngineMain"
+}
+
+kotlin {
+    jvmToolchain(25)
+}
+
+dependencies {
+    implementation("io.ktor:ktor-server-cors")
+    implementation("io.ktor:ktor-server-core")
+    implementation("io.ktor:ktor-server-auth")
+    implementation("io.ktor:ktor-server-content-negotiation")
+    implementation("io.ktor:ktor-serialization-kotlinx-json")
+    implementation("io.ktor:ktor-server-netty")
+    implementation("ch.qos.logback:logback-classic:$logback_version")
+    implementation("io.ktor:ktor-server-config-yaml")
+    implementation("org.json:json:20251224")
+    implementation("com.mysql:mysql-connector-j:9.6.0")
+    testImplementation("io.ktor:ktor-server-test-host")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
+}
