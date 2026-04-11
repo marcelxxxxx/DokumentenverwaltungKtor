@@ -12,10 +12,10 @@ object Hasher {
      * @since v1.0
      */
     fun generatePasswordHash(clearstring: String, salt: String): String {
-        if (clearstring != "") {
-            return this.hashString(salt + clearstring + salt)
+        return if (clearstring != "") {
+            this.hashString(salt + clearstring + salt)
         } else {
-            return clearstring
+            clearstring
         }
     }
 

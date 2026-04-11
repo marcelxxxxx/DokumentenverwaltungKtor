@@ -1,31 +1,37 @@
 package online.marcel.login
 
-import online.marcel.tools.Result
+import java.sql.Connection
 
 class LoginManager {
 
+    private val loginPersistence = LoginPersistence()
+
     fun handleLogin(login: Login): Result<Boolean> {
-        val result = Result<Boolean>()
         try {
             val email: String = login.email
             val password: String = login.password
 
             if (email.isEmpty() || !password.contains("@")) {
-                result.addError("Email-Adresse ist nicht ungültig")
-                return result
+                return Result.failure(Exception("Bitte gib eine gültige Email-Adresse ein"))
             }
 
             if (password.isEmpty()) {
-                result.addError("Das Passwort darf nicht leer sein")
-                return result
+                return Result.failure(Exception("Das Passwort darf nicht leer sein"))
             }
 
 
         } catch (e: Exception) {
             e.printStackTrace()
-            result.addError(e.message!!)
+            return Result.failure(e)
         }
-        return result
+        return Result.success(true)
+    }
+
+    fun getUserByMail(conn: Connection, mail: String) : Result<UserFromLogin> {
+        return runCatching {
+            val user: UserFromLogin? = loginPersistence.getUserByMail(conn, mail)
+            user ?: throw Exception("User zur Email $mail nicht gefunden")
+        }
     }
 
 }
