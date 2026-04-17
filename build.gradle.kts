@@ -31,6 +31,8 @@ dependencies {
     implementation("io.ktor:ktor-server-config-yaml")
     implementation("org.json:json:20251224")
     implementation("com.mysql:mysql-connector-j:9.6.0")
+    // Source: https://mvnrepository.com/artifact/de.mkammerer/argon2-jvm
+    implementation("de.mkammerer:argon2-jvm:2.12")
     testImplementation("io.ktor:ktor-server-test-host")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 }

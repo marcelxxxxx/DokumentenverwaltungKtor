@@ -7,7 +7,7 @@ import java.sql.ResultSet
 class LoginPersistence {
 
     fun getUserByMail(conn: Connection, mail: String): UserFromLogin? {
-        val stm = "SELECT email, hashPassword, salt FROM login WHERE email = ?";
+        val stm = "SELECT email, hashPassword, salt FROM login WHERE email = ? AND deleted IS NULL";
         var user: UserFromLogin? = null
 
         conn.prepareStatement(stm).use { pStmt: PreparedStatement ->
@@ -21,7 +21,6 @@ class LoginPersistence {
                 }
             }
         }
-
         return user
     }
 
