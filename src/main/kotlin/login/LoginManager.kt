@@ -1,8 +1,7 @@
 package online.marcel.login
 
 import online.marcel.db.DBManager
-import online.marcel.tools.Hasher
-import java.security.MessageDigest
+import online.marcel.tools.LoginTools
 import java.sql.Connection
 
 class LoginManager {
@@ -28,9 +27,7 @@ class LoginManager {
                 Result.failure(Exception("Logindaten ungültig"))
             } else {
                 val user: UserFromLogin = resultUser.getOrThrow()
-
-                val hashPassword = Hasher.generatePasswordHash(password, user.salt)
-                if (MessageDigest.isEqual(hashPassword.toByteArray(), user.hashPassword.toByteArray())) {
+                if (LoginTools.validatePassword(user.hashPassword, password)) {
                     Result.success(true)
                 } else {
                     Result.failure(Exception("Logindaten ungültig"))
@@ -42,7 +39,6 @@ class LoginManager {
             e.printStackTrace()
             return Result.failure(e)
         }
-        return Result.success(false)
     }
 
     fun getUserByMail(conn: Connection, mail: String) : Result<UserFromLogin> {

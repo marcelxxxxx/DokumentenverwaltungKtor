@@ -12,7 +12,6 @@ object LoginTools {
 
     fun validatePassword(storedHash: String, password: String): Boolean {
         val argon2: Argon2 = Argon2Factory.create()
-        // Validate the password against the hash
         return argon2.verify(storedHash, password.toCharArray())
     }
 
