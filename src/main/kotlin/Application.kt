@@ -1,6 +1,7 @@
 package online.marcel
 
 import io.ktor.server.application.*
+import online.marcel.file.fileModule
 import online.marcel.login.login
 import online.marcel.register.register
 
@@ -13,4 +14,5 @@ fun Application.module() {
     configureSerialization()
     register()
     login()
+    fileModule()
 }

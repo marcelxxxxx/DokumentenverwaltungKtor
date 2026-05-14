@@ -28,6 +28,7 @@ class LoginManager {
             } else {
                 val user: UserFromLogin = resultUser.getOrThrow()
                 if (LoginTools.validatePassword(user.hashPassword, password)) {
+                    this.loginPersistence.updateLastLogin(user)
                     Result.success(true)
                 } else {
                     Result.failure(Exception("Logindaten ungültig"))
