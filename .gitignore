@@ -36,3 +36,4 @@ out/
 .vscode/
 
 src/main/kotlin/db/DBData.kt
+src/main/kotlin/email/MailData.kt

@@ -33,6 +33,7 @@ dependencies {
     implementation("com.mysql:mysql-connector-j:9.6.0")
     // Source: https://mvnrepository.com/artifact/de.mkammerer/argon2-jvm
     implementation("de.mkammerer:argon2-jvm:2.12")
+    implementation("jakarta.mail:jakarta.mail-api:2.1.5")
     testImplementation("io.ktor:ktor-server-test-host")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 }
