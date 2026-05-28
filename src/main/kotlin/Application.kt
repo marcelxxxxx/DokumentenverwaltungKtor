@@ -1,6 +1,7 @@
 package online.marcel
 
 import io.ktor.server.application.*
+import online.marcel.email.emailModule
 import online.marcel.file.fileModule
 import online.marcel.login.login
 import online.marcel.register.register
@@ -15,4 +16,5 @@ fun Application.module() {
     register()
     login()
     fileModule()
+    emailModule()
 }
