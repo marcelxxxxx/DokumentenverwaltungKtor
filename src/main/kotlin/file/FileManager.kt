@@ -7,6 +7,9 @@ import io.ktor.util.cio.writeChannel
 import io.ktor.utils.io.copyAndClose
 import online.marcel.core.ApplicationManager
 import online.marcel.core.ApplicationUser
+import online.marcel.file.dataclass.FileFromDB
+import online.marcel.file.dataclass.UpdateDateRequest
+import online.marcel.file.dataclass.UploadFile
 import java.nio.file.Path
 import java.io.File
 import java.util.UUID
@@ -47,7 +50,14 @@ class FileManager {
                     val fileExtension: File = File(originalFileName)
                     newFilename += ".${fileExtension.extension}"
 
-                    fileuploadlist.addLast(UploadFile(originalFilename = originalFileName, newFilename = newFilename, pathToFile = "uploads/${newFilename}", uploadFrom = applicationUser.id))
+                    fileuploadlist.addLast(
+                        UploadFile(
+                            originalFilename = originalFileName,
+                            newFilename = newFilename,
+                            pathToFile = "uploads/${newFilename}",
+                            uploadFrom = applicationUser.id
+                        )
+                    )
 
                     val file: File = File("uploads/$newFilename")
                     part.provider().copyAndClose(file.writeChannel())
@@ -69,6 +79,20 @@ class FileManager {
             e.printStackTrace()
             return Result.failure(e)
         }
+    }
+
+    fun updateDateForEmailnotification(updateDateRequest: UpdateDateRequest, email: String): Result<Boolean> {
+        try {
+            val resultApplication: Result<ApplicationUser> = ApplicationManager.getApplicationUser(email)
+            val applicationUser: ApplicationUser = resultApplication.getOrThrow()
+
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return Result.failure(e)
+        }
+
+        return Result.failure(Exception("Update"))
     }
 
 }

@@ -1,6 +1,8 @@
 package online.marcel.file
 
 import online.marcel.db.DBManager
+import online.marcel.file.dataclass.FileFromDB
+import online.marcel.file.dataclass.UploadFile
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
@@ -39,7 +41,12 @@ class FilePersistence {
                         val path: Path =  File(rs.getString(3)).toPath()
                         val mimeType: String = Files.probeContentType(path)
 
-                        val filefromdb: FileFromDB = FileFromDB(id = rs.getInt(1), originalFilename = rs.getString(2), newFilename = rs.getString(3), filetype = mimeType)
+                        val filefromdb: FileFromDB = FileFromDB(
+                            id = rs.getInt(1),
+                            originalFilename = rs.getString(2),
+                            newFilename = rs.getString(3),
+                            filetype = mimeType
+                        )
                         fileList.add(filefromdb)
                     }
                 }
@@ -49,5 +56,6 @@ class FilePersistence {
         return fileList
     }
 
+    fun getDatasetForEmailNotificationById()
 
 }

@@ -16,8 +16,10 @@ import kotlin.time.Duration.Companion.minutes
 
 
 fun Application.emailModule() {
+    val sendMailTo: List<String> = listOf("m_blankschein@web.de")
+
     val job: Job = launchPeriodicTask(interval = 1.minutes, scope = this) {
-        sendMail()
+        sendMail(sendMailTo)
     }
 
     monitor.subscribe(ApplicationStopped) {
@@ -25,7 +27,7 @@ fun Application.emailModule() {
     }
 }
 
-fun sendMail() {
+fun sendMail(to: List<String>) {
 
     val props: Properties = Properties().apply {
         put("mail.smtp.host", "smtp.strato.de")
@@ -44,8 +46,7 @@ fun sendMail() {
     try {
         val message: Message = MimeMessage(session)
         message.setFrom(InternetAddress(MailData.email))
-        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(MailData.email)
-        )
+        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to.joinToString(", ")))
         message.subject = "subject"
         message.setContent("messagetext", "text/html; charset=utf-8")
 
@@ -53,6 +54,8 @@ fun sendMail() {
     } catch (e: MessagingException) {
         e.printStackTrace()
     }
+
+    println("Mails an ${to.joinToString(", ")} versendet")
 }
 
 fun launchPeriodicTask(interval: Duration, scope: CoroutineScope, funktion: suspend () -> Unit): Job {

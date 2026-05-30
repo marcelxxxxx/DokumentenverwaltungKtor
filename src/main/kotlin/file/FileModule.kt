@@ -5,14 +5,16 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.content.MultiPartData
 import io.ktor.server.application.Application
+import io.ktor.server.request.receive
 import io.ktor.server.request.receiveMultipart
 import io.ktor.server.response.header
 import io.ktor.server.response.respond
 import io.ktor.server.response.respondFile
-import io.ktor.server.response.respondText
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.routing
+import online.marcel.file.dataclass.FileFromDB
+import online.marcel.file.dataclass.UpdateDateRequest
 import java.io.File
 
 fun Application.fileModule() {
@@ -44,7 +46,10 @@ fun Application.fileModule() {
 
             val multipartData: MultiPartData = call.receiveMultipart(formFieldLimit = 1024 * 1024 * 100) //100 MIB können hochgeladen werden
             filemanager.handleFileMultipartData(multipartData = multipartData, email = email)
-            call.respondText("File is uploaded")
+            call.respond(HttpStatusCode.OK)
+        }
+        post("/updateDate") {
+            val updateDateRequest: UpdateDateRequest = call.receive<UpdateDateRequest>()
         }
     }
 }

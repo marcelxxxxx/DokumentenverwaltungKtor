@@ -16,5 +16,5 @@ fun Application.module() {
     register()
     login()
     fileModule()
-    emailModule()
+    //emailModule()
 }
