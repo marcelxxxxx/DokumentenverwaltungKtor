@@ -3,6 +3,7 @@ package online.marcel.tools
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.toJavaLocalDate
 import java.sql.PreparedStatement
+import java.sql.ResultSet
 import java.sql.Types
 
 object SQLHelper {
@@ -29,6 +30,10 @@ object SQLHelper {
         } else {
             pStmt.setObject(index, localDate.toJavaLocalDate())
         }
+    }
+
+    fun getLocalDate(rs: ResultSet, index: Int): LocalDate {
+        return rs.getObject(index, LocalDate::class.java)
     }
 
 }

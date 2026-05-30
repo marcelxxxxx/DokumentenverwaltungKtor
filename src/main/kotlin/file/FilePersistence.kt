@@ -1,6 +1,8 @@
 package online.marcel.file
 
+import kotlinx.datetime.LocalDate
 import online.marcel.db.DBManager
+import online.marcel.file.dataclass.EmailNotificationRowFromDB
 import online.marcel.file.dataclass.FileFromDB
 import online.marcel.file.dataclass.UploadFile
 import java.io.File
@@ -56,6 +58,24 @@ class FilePersistence {
         return fileList
     }
 
-    fun getDatasetForEmailNotificationById()
+    fun getDatasetForEmailNotificationByFileid(conn: Connection, fileid: Int, userid: Int): List<EmailNotificationRowFromDB> {
+        val emailnotificationlist: MutableList<EmailNotificationRowFromDB> = mutableListOf()
+
+        val stm: String = "SELECT eb.id, eb.fileid, eb.date FROM emailnotification " +
+                "JOIN file ON (file.id = eb.fileid) " +
+                "WHERE file.deleted IS NULL AND eb.deleted IS NULL AND eb.fileid = ? AND file.uploadFileBy = ?;"
+
+
+
+        return emailnotificationlist
+    }
+
+    fun insertDatasetInEmailNotification(conn: Connection, fileid: Int, date: LocalDate) {
+
+    }
+
+    fun updateDatasetInEmailNotification(conn: Connection, rowid: Int, date: LocalDate) {
+
+    }
 
 }
