@@ -16,6 +16,8 @@ import kotlin.time.Duration.Companion.minutes
 
 
 fun Application.emailModule() {
+    val emailManager = EmailManager()
+
     val sendMailTo: List<String> = listOf("m_blankschein@web.de")
 
     val job: Job = launchPeriodicTask(interval = 1.minutes, scope = this) {

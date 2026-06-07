@@ -7,9 +7,12 @@ import io.ktor.util.cio.writeChannel
 import io.ktor.utils.io.copyAndClose
 import online.marcel.core.ApplicationManager
 import online.marcel.core.ApplicationUser
+import online.marcel.db.DBManager
+import online.marcel.file.dataclass.EmailNotificationRowFromDB
 import online.marcel.file.dataclass.FileFromDB
 import online.marcel.file.dataclass.UpdateDateRequest
 import online.marcel.file.dataclass.UploadFile
+import online.marcel.tools.DateTimeHelper
 import java.nio.file.Path
 import java.io.File
 import java.util.UUID
@@ -81,18 +84,27 @@ class FileManager {
         }
     }
 
-    fun updateDateForEmailnotification(updateDateRequest: UpdateDateRequest, email: String): Result<Boolean> {
+    fun updateOrInsertDateForEmailnotification(updateDateRequest: UpdateDateRequest): Result<Boolean> {
         try {
-            val resultApplication: Result<ApplicationUser> = ApplicationManager.getApplicationUser(email)
-            val applicationUser: ApplicationUser = resultApplication.getOrThrow()
+            DBManager.getConnection().use { conn ->
+                val resultApplication: Result<ApplicationUser> = ApplicationManager.getApplicationUser(conn, updateDateRequest.email)
+                val applicationUser: ApplicationUser = resultApplication.getOrThrow()
 
+                val list: List<EmailNotificationRowFromDB> = this.filePersistence.getDatasetForEmailNotificationByFileid(conn, updateDateRequest.documentid, applicationUser.id)
 
+                if (list.isEmpty()) {
+                    this.filePersistence.insertDatasetInEmailNotification(conn, updateDateRequest.documentid, DateTimeHelper.convertDateStringToLocalDate(updateDateRequest.date))
+                } else {
+                    for (emailnotification: EmailNotificationRowFromDB in list) {
+                        this.filePersistence.updateDatasetInEmailNotification(conn, emailnotification.id, DateTimeHelper.convertDateStringToLocalDate(updateDateRequest.date))
+                    }
+                }
+            }
+            return Result.success(true)
         } catch (e: Exception) {
             e.printStackTrace()
             return Result.failure(e)
         }
-
-        return Result.failure(Exception("Update"))
     }
 
 }

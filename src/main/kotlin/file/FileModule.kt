@@ -50,6 +50,9 @@ fun Application.fileModule() {
         }
         post("/updateDate") {
             val updateDateRequest: UpdateDateRequest = call.receive<UpdateDateRequest>()
+
+            filemanager.updateOrInsertDateForEmailnotification(updateDateRequest)
+            call.respond(HttpStatusCode.OK)
         }
     }
 }

@@ -1,7 +1,10 @@
 package online.marcel.tools
 
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.toJavaLocalDate
+import kotlinx.datetime.toKotlinLocalDate
+import kotlinx.datetime.toKotlinLocalDateTime
 import java.sql.PreparedStatement
 import java.sql.ResultSet
 import java.sql.Types
@@ -32,8 +35,12 @@ object SQLHelper {
         }
     }
 
-    fun getLocalDate(rs: ResultSet, index: Int): LocalDate {
-        return rs.getObject(index, LocalDate::class.java)
+    fun getLocalDate(rs: ResultSet, index: Int): LocalDate? {
+        return rs.getObject(index, java.time.LocalDate::class.java)?.toKotlinLocalDate()
+    }
+
+    fun getLocalDateTime(rs: ResultSet, index: Int): LocalDateTime? {
+        return rs.getObject(index, java.time.LocalDateTime::class.java)?.toKotlinLocalDateTime()
     }
 
 }
