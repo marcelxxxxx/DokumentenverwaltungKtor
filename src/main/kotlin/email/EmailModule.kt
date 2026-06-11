@@ -41,6 +41,8 @@ fun checkSendMail(emailmanager: EmailManager) {
         for(sendmaildata: SendMailData in list) {
             val builder: StringBuilder = StringBuilder()
 
+            builder.appendLine("Folgende Dokumente laufen demnächst ab")
+
             for (notificationrow: EmailNotificationRow in sendmaildata.rowlist) {
                 builder.appendLine(notificationrow.filename + ": " + notificationrow.date.toString())
                 notificationlist.add(notificationrow)

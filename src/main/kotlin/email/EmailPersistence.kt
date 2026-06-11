@@ -30,7 +30,8 @@ class EmailPersistence {
                 "FROM emailnotification AS en " +
                 "JOIN file ON file.id = en.fileid AND file.deleted IS NULL " +
                 "JOIN login ON (login.id = file.uploadFileBy) " +
-                "WHERE en.sendnotification IS NULL AND en.deleted IS NULL AND en.date IS NOT NULL AND en.date <= CURDATE();"
+                "WHERE en.sendnotification IS NULL AND en.deleted IS NULL AND en.date IS NOT NULL " +
+                "AND en.date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY);"
 
         conn.prepareStatement(stm).use { pStmt: PreparedStatement ->
             pStmt.executeQuery().use { rs: ResultSet ->
