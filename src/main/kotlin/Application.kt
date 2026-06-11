@@ -11,10 +11,10 @@ fun main(args: Array<String>) {
 }
 
 fun Application.module() {
-    configureHTTP()
-    configureSerialization()
-    register()
-    login()
-    fileModule()
-    //emailModule()
+    //configureHTTP()
+    //configureSerialization()
+    //register()
+    //login()
+    //fileModule()
+    emailModule()
 }
